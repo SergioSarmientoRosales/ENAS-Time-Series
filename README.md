@@ -1,5 +1,5 @@
 # ENAS_Time_Series
-This repository contains the necessary elements for the general application for : Didactic Approach to Evolutionary Neural Architecture Search for Time Series Forecasting.
+This repository contains the necessary elements for  Evolutionary Neural Architecture Search for Time Series.
 
 
 This project seeks to make learning Neural Architecture Search (NAS) more accessible and understandable to a broader audience. NAS involves the use of evolutionary algorithms, which are methods inspired by natural evolution to optimize the design of neural networks. These evolutionary algorithms have different parameters that influence how the search for the most effective neural architectures for a specific task is carried out.
