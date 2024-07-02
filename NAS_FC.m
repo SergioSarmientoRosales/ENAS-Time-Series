@@ -1,6 +1,6 @@
 %Code created by (1) Martha Isabel Escalona Llaguno & (2) Sergio M. Sarmiento-Rosales.
            %Universidad Autónoma de Zacatecas / Tec. de Monterrey
-                   %For AutoML 2024. Free use license
+                   % Free use license
             %Contacts: (1) ing_miell@hotmail.com (2) sarmiento@tec.mx
 
 % CLEAR WORKSPACE
