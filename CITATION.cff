@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated IJCCI 2024 paper."
+title: "ENAS-Time-Series"
+type: software
+authors:
+  - family-names: "Escalona-Llaguno"
+    given-names: "M. I."
+  - family-names: "Sarmiento-Rosales"
+    given-names: "S. M."
+repository-code: "https://github.com/SergioSarmientoRosales/ENAS-Time-Series"
+preferred-citation:
+  type: conference-paper
+  title: "Educational Evolutionary Neural Architecture Search for Time Series Prediction"
+  authors:
+    - family-names: "Escalona-Llaguno"
+      given-names: "M. I."
+    - family-names: "Sarmiento-Rosales"
+      given-names: "S. M."
+  collection-title: "IJCCI"
+  year: 2024
+  start: 234
+  end: 241

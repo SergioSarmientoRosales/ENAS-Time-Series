@@ -1,0 +1,34 @@
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE folders
+.idea/
+.vscode/
+
+# MATLAB temporary and backup files
+*.asv
+*.m~
+*.autosave
+
+# Python and notebook artifacts sometimes created during analysis
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local virtual environments
+.venv/
+venv/
+env/
+
+# Local datasets and generated experiment outputs
+data/
+datasets/
+outputs/
+results/
+figures/
+logs/
+
+# Temporary files
+*.tmp
+*.temp
