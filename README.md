@@ -8,6 +8,8 @@ Escalona-Llaguno, M. I., & Sarmiento-Rosales, S. M. (2024). Educational Evolutio
 
 The project is intended as an accessible example of how evolutionary search can be used to explore neural-network architectures for univariate time-series forecasting. It is research and teaching code, not a production AutoML framework.
 
+The repository includes the original MATLAB script and a Python companion implementation that mirrors the same educational objective: search over simple neural-network architecture choices for time-series prediction using an evolutionary algorithm.
+
 ## Background
 
 Neural Architecture Search (NAS) is a method for automatically exploring different neural-network designs instead of choosing every design detail by hand. In this repository, the searched design choices include the number of hidden neurons and the number of time lags used by a nonlinear autoregressive neural network.
@@ -26,26 +28,34 @@ The educational aspect of this project is that the workflow is contained in one 
 - Default configuration for a small educational run.
 - Optional custom configuration for population size, generations, elitism, crossover probability, and mutation probability.
 - Plots showing the initial/final population and evaluation behavior across generations.
+- Python command-line version using `scikit-learn` for a one-hidden-layer MLP baseline.
+- Machine-readable citation metadata and an MIT open-source license.
 
 ## Repository Structure
 
 | Path | Purpose |
 | --- | --- |
 | `NAS_FC.m` | Main MATLAB script. Loads data, runs the evolutionary search, trains/evaluates candidate NAR networks, and plots results. |
+| `python/enas_time_series.py` | Python companion script. Runs an educational evolutionary search over lag count and hidden neurons. |
+| `requirements.txt` | Python dependencies for the companion implementation. |
 | `README.md` | Project overview, setup, usage, reproducibility notes, and citation. |
 | `CITATION.cff` | Machine-readable citation metadata for GitHub and citation tools. |
+| `LICENSE` | MIT open-source license. |
 | `.gitignore` | Local data, output, editor, and temporary-file ignore rules. |
 
 ## Requirements
 
-This is a MATLAB project. It does not require Python dependencies.
-
-Required software:
+MATLAB implementation:
 
 - MATLAB, preferably a current desktop or MATLAB Online version.
 - MATLAB Deep Learning Toolbox, because the script uses functions such as `narnet`, `preparets`, `train`, `mapminmax`, and `mse`.
 
-No GPU is explicitly required by the script. Runtime depends on the dataset length, population size, number of generations, and MATLAB/toolbox version.
+Python companion implementation:
+
+- Python 3.9 or newer.
+- Dependencies listed in `requirements.txt`: `numpy`, `pandas`, `scikit-learn`, and `matplotlib`.
+
+No GPU is explicitly required by either implementation. Runtime depends on the dataset length, population size, number of generations, and MATLAB/Python dependency versions.
 
 ## Data
 
@@ -88,15 +98,31 @@ cd ENAS-Time-Series
 
 Then download the dataset files you want to use and place them in the repository folder, or keep them in another folder and provide the path when using the custom dataset option.
 
-In MATLAB, set the current folder to the repository directory:
+For MATLAB, set the current folder to the repository directory:
 
 ```matlab
 cd path/to/ENAS-Time-Series
 ```
 
+For Python, create an environment and install dependencies:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+On macOS/Linux, use:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
 ## Quick Start
 
-In MATLAB, run:
+MATLAB:
 
 ```matlab
 NAS_FC
@@ -109,6 +135,18 @@ Recommended first run:
 3. Select either `Random Population` or `Uniform Population`.
 4. Wait for the script to train and evaluate the candidate networks.
 5. Use the final plotting menu to inspect the search behavior.
+
+Python demo smoke test:
+
+```bash
+python python/enas_time_series.py --demo --population-size 6 --generations 2 --max-iter 100 --output-dir outputs/python-demo --plot
+```
+
+Python with an external CSV:
+
+```bash
+python python/enas_time_series.py --csv PJMW_hourly.csv --population-size 20 --generations 5 --output-dir outputs/pjmw-python --plot
+```
 
 The default settings are:
 
@@ -124,6 +162,8 @@ The default settings are:
 
 ## Running Experiments
 
+### MATLAB
+
 The script is interactive. It prompts for:
 
 - Dataset selection.
@@ -135,6 +175,25 @@ During execution, the command window reports each generation, each trained indiv
 
 The script does not save result files by default. Outputs are shown in the MATLAB command window and figures. If you need persistent experiment records, save the command-window output and figures manually, or extend the script with explicit result-saving code.
 
+### Python
+
+The Python companion script is non-interactive. It accepts command-line arguments for the dataset, population size, generation count, evolutionary probabilities, search ranges, random seed, and output directory.
+
+Useful options:
+
+```bash
+python python/enas_time_series.py --help
+```
+
+By default, the Python script reads the second CSV column as the target series, matching the MATLAB script. You can select another column by name or zero-based index:
+
+```bash
+python python/enas_time_series.py --csv data.csv --value-column target
+python python/enas_time_series.py --csv data.csv --value-column 2
+```
+
+The Python implementation uses a chronological 70/15/15 train/validation/test split. Evolutionary selection uses validation correlation `R` as fitness and reports test metrics for the selected architectures.
+
 ## Expected Outputs
 
 Typical outputs include:
@@ -144,6 +203,8 @@ Typical outputs include:
 - Scatter plots for initial and final populations.
 - Histograms of hidden-neuron and lag frequencies.
 - Optional plots of `R` values across generations.
+- Python CSV/JSON outputs when `--output-dir` is provided.
+- Python diagnostic plots when both `--output-dir` and `--plot` are provided.
 
 No paper-level numerical results are reproduced automatically from a clean clone because the datasets are external and the repository does not include a scripted reproduction pipeline.
 
@@ -155,6 +216,8 @@ No paper-level numerical results are reproduced automatically from a clean clone
 - Record the dataset file, dataset source/version, MATLAB version, toolbox version, selected menu options, and all custom parameters when reporting results.
 - Use the default values for a first run before changing population size, generation count, or probabilities.
 - The current code is an interactive research script. It is useful for education and exploration, but it is not organized as a fully automated benchmark suite.
+- The Python demo mode creates a synthetic signal only for smoke testing. Do not report demo metrics as experimental results.
+- The MATLAB and Python implementations are educational companions, not guaranteed numerically equivalent reproductions.
 
 ## Troubleshooting
 
@@ -174,9 +237,17 @@ Very long runtime
 
 Reduce the number of individuals or generations. Each candidate architecture trains a neural network, so runtime grows quickly.
 
+Python dependency errors
+
+Install the dependencies with `pip install -r requirements.txt` inside a Python 3.9+ environment.
+
 Indexing errors during crossover or mutation
 
 This may indicate that the evolutionary update loop needs review for the selected population settings. This documentation update does not change algorithm logic; review the population-size and indexing assumptions in `NAS_FC.m` before using modified settings or publication-grade runs.
+
+## License
+
+This repository is released under the MIT License. See `LICENSE` for details.
 
 ## Citation
 

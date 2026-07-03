@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite the associated IJCCI 2024 paper."
 title: "ENAS-Time-Series"
 type: software
+license: "MIT"
 authors:
   - family-names: "Escalona-Llaguno"
     given-names: "M. I."
